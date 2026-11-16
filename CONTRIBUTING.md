@@ -4,7 +4,7 @@ Thanks for helping keep this guide accurate. You don't need to be a developer.
 
 ## Found something outdated or wrong?
 
-Click **Report Outdated Hardware** at the bottom of the page, or [open an issue](../../issues/new/choose). Tell us what's wrong and, if you can, link a source (official docs, release notes).
+Click **Report Error / Broken Link** at the bottom of the page (it fills in the setup you have selected), or [open an issue](../../issues/new/choose). Tell us what's wrong, for example a broken doc link, wrong instructions or outdated hardware, and, if you can, link a source (official docs, release notes).
 
 ## Want to fix it yourself?
 

@@ -1,5 +1,5 @@
-name: Report outdated or wrong information
-description: Something in the guide is out of date or incorrect.
+name: Report an error, broken link or outdated info
+description: A doc link is broken, or something in the guide is out of date or incorrect.
 title: "Outdated: "
 body:
   - type: input
