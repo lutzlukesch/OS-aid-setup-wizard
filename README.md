@@ -32,6 +32,10 @@ npm run validate   # check data/flow.json against the schema
 
 Opening `index.html` straight from disk does not work: browsers block `fetch()` of `data/flow.json` over `file://`.
 
+## Contributing
+
+Found something outdated? See [CONTRIBUTING.md](CONTRIBUTING.md): you can report it or fix it right on GitHub, no setup needed.
+
 ## Updating hardware data
 
 All content lives in `data/flow.json`. Most editors pick up `flow.schema.json` through the `$schema` key and autocomplete fields.

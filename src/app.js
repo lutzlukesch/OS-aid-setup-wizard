@@ -123,7 +123,7 @@ function showToast(message) {
 function issuesUrl() {
   const owner = location.hostname.match(/^([^.]+)\.github\.io$/)?.[1];
   const repo = location.pathname.split('/').find(Boolean);
-  return owner && repo ? `https://github.com/${owner}/${repo}/issues/new` : null;
+  return owner && repo ? `https://github.com/${owner}/${repo}/issues/new?template=outdated-hardware.yml` : null;
 }
 
 async function init() {
