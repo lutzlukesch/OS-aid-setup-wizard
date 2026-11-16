@@ -237,7 +237,7 @@
                   "wakesAppInBackground": true,
                   "extraNote": "Provides a reliable 5-minute background BLE wake heartbeat.",
                   "howToUseWithAlgorithm": "Pair your sensor in the official Dexcom G7 or ONE+ iOS app first, then open Loop -> Settings -> Add CGM -> Dexcom G7. Loop intercepts the Bluetooth packets directly offline.",
-                  "cgmDocsUrl": "https://loopkit.github.io/loopdocs/loop-3/cgm/#dexcom-g7"
+                  "cgmDocsUrl": "https://loopkit.github.io/loopdocs/loop-3/add-cgm/#dexcom-g7-or-one"
                 },
                 {
                   "id": "dexcom-g6",
@@ -246,7 +246,7 @@
                   "wakesAppInBackground": true,
                   "extraNote": "Anubis extended-life transmitters supported in Loop v3.14.6+.",
                   "howToUseWithAlgorithm": "Enter your 6-digit Transmitter ID inside Loop -> Add CGM -> Dexcom G6. Runs 100% offline alongside the official Dexcom G6 app or xDrip4iOS.",
-                  "cgmDocsUrl": "https://loopkit.github.io/loopdocs/loop-3/cgm/#dexcom-g6"
+                  "cgmDocsUrl": "https://loopkit.github.io/loopdocs/loop-3/add-cgm/#dexcom-g5-g6-one"
                 },
                 {
                   "id": "libre-3",
@@ -255,7 +255,7 @@
                   "wakesAppInBackground": true,
                   "extraNote": "Requires Loop `next-dev` branch for native direct BLE, or a custom xDrip4iOS fork.",
                   "howToUseWithAlgorithm": "Build Loop `next-dev` for built-in direct Bluetooth pairing, OR pair with a custom `xDrip4iOS` (`libre3-integration`) build and select 'xDrip4iOS' via Shared App Group in Loop.",
-                  "cgmDocsUrl": "https://loopkit.github.io/loopdocs/loop-3/cgm/"
+                  "cgmDocsUrl": "https://loopkit.github.io/loopdocs/loop-3/add-cgm/#libre"
                 },
                 {
                   "id": "libre-2-eu",
@@ -264,7 +264,7 @@
                   "wakesAppInBackground": true,
                   "extraNote": "Requires paid $99 Apple Developer account for iOS NFC entitlement. (US/CA Libre 2 is unsupported).",
                   "howToUseWithAlgorithm": "In Loop -> Add CGM -> FreeStyle Libre, scan the sensor via iPhone NFC to start direct 1-minute Bluetooth streaming into Loop without needing the Abbott app.",
-                  "cgmDocsUrl": "https://loopkit.github.io/loopdocs/loop-3/cgm/#freestyle-libre"
+                  "cgmDocsUrl": "https://loopkit.github.io/loopdocs/loop-3/add-cgm/#libre"
                 },
                 {
                   "id": "eversense-e3-365",
@@ -273,7 +273,7 @@
                   "wakesAppInBackground": true,
                   "extraNote": "Do not run the official Eversense app simultaneously while Loop is connected.",
                   "howToUseWithAlgorithm": "Select 'Eversense' inside Loop -> Add CGM to pair directly with the smart transmitter over Bluetooth.",
-                  "cgmDocsUrl": "https://loopkit.github.io/loopdocs/loop-3/cgm/"
+                  "cgmDocsUrl": "https://loopkit.github.io/loopdocs/loop-3/eversense/"
                 },
                 {
                   "id": "medtronic-guardian-remote",
@@ -282,7 +282,7 @@
                   "wakesAppInBackground": false,
                   "extraNote": "Warning: Cloud-only CGM does NOT wake Loop in the background if iOS suspends the app.",
                   "howToUseWithAlgorithm": "Requires a separate uploader device pushing readings to Nightscout, then select 'Nightscout' as CGM in Loop. Requires constant internet.",
-                  "cgmDocsUrl": "https://loopkit.github.io/loopdocs/loop-3/cgm/"
+                  "cgmDocsUrl": "https://loopkit.github.io/loopdocs/loop-3/add-cgm/#nightscout-remote-cgm"
                 }
               ],
               "pumps": [
