@@ -9,7 +9,7 @@
         "ios": {
           "name": "iOS (iPhone / iPad)",
           "subtitle": "LoopFollow, LoopCaregiver, Careportal & xDrip4iOS",
-          "costBadge": "$0 (App Store) or $99/yr (Self-Built)",
+          "costBadge": "$99/yr (Self-Built)",
           "costNote": "LoopFollow and Shuggah are free on the App Store or via Browser Build. Sending direct APNS remote commands to Loop or Trio requires the Master builder's APNS Key/QR Code.",
           "buildMethod": "App Store, GitHub Browser Build, or Xcode",
           "masterAlgorithms": {
