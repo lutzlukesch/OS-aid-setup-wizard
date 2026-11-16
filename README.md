@@ -4,7 +4,7 @@ An interactive, single-page planner for open-source automated insulin delivery (
 
 > **Disclaimer:** educational compatibility planner only. Not medical advice. Always consult your diabetes care team before changing insulin therapy.
 
-A setup can be shared as a link: the current choices are kept in the URL hash, e.g. `#role=master&os=ios&alg=trio&cgm=dexcom-g7-oneplus&pump=omnipod-dash`.
+A setup can be shared as a link: the current choices are kept in the URL hash, e.g. `#role=master&os=ios&alg=trio&cgm=dexcom-g7-oneplus&pump=omnipod-dash`. Without a hash, or after **Reset**, nothing is selected and each step appears once the one before it is chosen.
 
 ## Project layout
 

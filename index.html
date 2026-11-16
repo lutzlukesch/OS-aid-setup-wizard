@@ -76,7 +76,7 @@
         </div>
       </div>
 
-      <ol id="stepper" class="stepper" aria-label="Wizard steps"></ol>
+      <ol id="stepper" class="stepper" aria-label="Wizard steps" hidden></ol>
     </div>
   </header>
 
@@ -102,7 +102,7 @@
       </div>
 
       <div id="roleGroup" class="choice-grid" role="radiogroup" aria-labelledby="roleTitle">
-        <div class="choice-card" role="radio" aria-checked="true" tabindex="0" data-action="role" data-value="master">
+        <div class="choice-card" role="radio" aria-checked="false" tabindex="0" data-action="role" data-value="master">
           <div>
             <div class="mb-3 flex items-center justify-between">
               <div class="flex items-center gap-3">
@@ -153,7 +153,7 @@
     </section>
 
     <!-- STEP 2: PLATFORM -->
-    <section class="wizard-card p-5 sm:p-6" aria-labelledby="osTitle">
+    <section id="osStep" class="wizard-card p-5 sm:p-6" aria-labelledby="osTitle" hidden>
       <div class="mb-4 flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
         <div>
           <span class="text-[11px] font-bold uppercase tracking-wider text-sky-400">Step 2 &bull; Smartphone Platform (XOR)</span>
@@ -163,7 +163,7 @@
       </div>
 
       <div id="osGroup" class="choice-grid" role="radiogroup" aria-labelledby="osTitle">
-        <div class="choice-card" role="radio" aria-checked="true" tabindex="0" data-action="os" data-value="ios">
+        <div class="choice-card" role="radio" aria-checked="false" tabindex="0" data-action="os" data-value="ios">
           <div>
             <div class="mb-3 flex items-center justify-between">
               <div class="flex items-center gap-3">
@@ -239,7 +239,7 @@
       </section>
 
       <!-- STEP 4 (CAREGIVER): APPS & REMOTE CONTROL -->
-      <section class="wizard-card border-purple-500/40 p-5 sm:p-6" aria-labelledby="followerBranchTitle">
+      <section id="followerAppsStep" class="wizard-card border-purple-500/40 p-5 sm:p-6" aria-labelledby="followerBranchTitle" hidden>
         <div class="mb-4 flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
           <div>
             <span class="text-[11px] font-bold uppercase tracking-wider text-purple-400">Step 4 &bull; Compatible Caregiver Apps &amp; Remote Dosing</span>
@@ -268,7 +268,7 @@
     <!-- ===================================================================== -->
     <!-- BRANCH B: MASTER (Algorithm -> CGM -> Pump -> Clinic)                 -->
     <!-- ===================================================================== -->
-    <div id="masterBranch" class="space-y-6">
+    <div id="masterBranch" class="space-y-6" hidden>
 
       <!-- STEP 3 (MASTER): ALGORITHM -->
       <section class="wizard-card p-5 sm:p-6" aria-labelledby="masterAlgTitle">
@@ -283,7 +283,7 @@
       </section>
 
       <!-- STEP 4 (MASTER): CGM -->
-      <section class="wizard-card p-5 sm:p-6" aria-labelledby="cgmTitle">
+      <section id="cgmStep" class="wizard-card p-5 sm:p-6" aria-labelledby="cgmTitle" hidden>
         <div class="mb-4 flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
           <div>
             <span class="text-[11px] font-bold uppercase tracking-wider text-sky-400">Step 4 &bull; Continuous Glucose Monitor (CGM)</span>
@@ -297,7 +297,7 @@
         <label for="cgmSelect" class="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-300">Select Continuous Glucose Monitor (CGM)</label>
         <select id="cgmSelect" class="dark-select" data-bind="cgm"></select>
 
-        <div class="mt-4 space-y-3 rounded-xl border border-slate-800 bg-slate-950/90 p-4 sm:p-5">
+        <div id="cgmDetails" class="mt-4 space-y-3 rounded-xl border border-slate-800 bg-slate-950/90 p-4 sm:p-5">
           <div class="flex flex-wrap items-center justify-between gap-2">
             <span class="text-xs font-bold uppercase tracking-wider text-sky-400">
               How to use with <span id="cgmCardAlgLabel"></span>:
@@ -321,7 +321,7 @@
       </section>
 
       <!-- STEP 5 (MASTER): PUMP -->
-      <section class="wizard-card p-5 sm:p-6" aria-labelledby="pumpTitle">
+      <section id="pumpStep" class="wizard-card p-5 sm:p-6" aria-labelledby="pumpTitle" hidden>
         <div class="mb-4 flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
           <div>
             <span class="text-[11px] font-bold uppercase tracking-wider text-sky-400">Step 5 &bull; Insulin Pump &amp; Where to Continue</span>
@@ -393,7 +393,7 @@
       </section>
 
       <!-- STEP 6 (MASTER): CLINICIAN & CLOUD DATA -->
-      <section class="wizard-card p-5 sm:p-6" aria-labelledby="clinicTitle">
+      <section id="clinicStep" class="wizard-card p-5 sm:p-6" aria-labelledby="clinicTitle" hidden>
         <div class="mb-5 flex flex-col justify-between gap-2 sm:flex-row sm:items-center">
           <div>
             <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-400">Step 6 &bull; Clinical &amp; Cloud Documentation</span>
