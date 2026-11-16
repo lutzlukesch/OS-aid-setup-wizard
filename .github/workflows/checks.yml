@@ -23,6 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # assets/styles.css is build output, so it is not in the checkout
       - uses: lycheeverse/lychee-action@v2
         with:
           args: >-
@@ -30,5 +31,6 @@ jobs:
             --exclude 'fonts\.(googleapis|gstatic)\.com'
             --exclude 'w3\.org'
             --exclude 'json-schema\.org'
+            --exclude 'assets/styles\.css'
             index.html data/flow.json
           fail: true
