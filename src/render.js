@@ -16,19 +16,25 @@ import {
 const OS_LABELS = { ios: 'iOS', android: 'Android' };
 
 export function render(state, data) {
-  const isFollower = state.role === 'follower';
+  const { role, os } = state;
 
-  document.body.dataset.role = state.role;
-  syncRadioGroup($('roleGroup'), state.role);
-  syncRadioGroup($('osGroup'), state.os);
+  document.body.dataset.role = role;
+  syncRadioGroup($('roleGroup'), role);
+  syncRadioGroup($('osGroup'), os);
   $('showDeprecatedToggle').checked = state.showDeprecated;
+
+  // Each step appears only once the step before it has a choice.
+  $('stepper').hidden = !role;
+  $('osStep').hidden = !role;
+  $('followerBranch').hidden = !(role === 'follower' && os);
+  $('masterBranch').hidden = !(role === 'master' && os);
+  if (!role) return;
 
   renderStepper(state, data);
   renderPlatforms(state, data);
+  if (!os) return;
 
-  $('followerBranch').hidden = !isFollower;
-  $('masterBranch').hidden = isFollower;
-  if (isFollower) {
+  if (role === 'follower') {
     renderFollowerBranch(state, data);
   } else {
     renderMasterBranch(state, data);
@@ -87,6 +93,9 @@ function renderFollowerBranch(state, data) {
   );
   syncRadioGroup(group, state.followerAlg);
 
+  $('followerAppsStep').hidden = !algorithm;
+  if (!algorithm) return;
+
   setText('followerBranchTitle', `Available Caregiver Builds: ${platform.name} Following ${algorithm.name}`);
   setText('followerComboBadge', `${OS_LABELS[state.os]} Caregiver → ${algorithm.name}`);
   setText('followerCostNote', platform.costNote);
@@ -134,8 +143,14 @@ function renderMasterBranch(state, data) {
   syncRadioGroup(group, state.alg);
 
   const algorithm = masterAlgorithm(state, data);
-  renderCgm(state, algorithm);
-  renderPump(state, algorithm);
+  const cgm = algorithm && selectedCgm(state, algorithm);
+  const pump = cgm && selectedPump(state, algorithm);
+
+  $('cgmStep').hidden = !algorithm;
+  $('pumpStep').hidden = !cgm;
+  $('clinicStep').hidden = !pump;
+  if (algorithm) renderCgm(state, algorithm);
+  if (cgm) renderPump(state, algorithm);
 }
 
 function renderCgm(state, algorithm) {
@@ -145,10 +160,14 @@ function renderCgm(state, algorithm) {
   setText('cgmCardAlgLabel', algorithm.name);
 
   const select = $('cgmSelect');
-  renderOnce(select, `${state.os}:${state.alg}`, () =>
-    algorithm.cgms.map((c) => new Option(`${c.name} — [${c.driverTag}]`, c.id))
-  );
-  select.value = cgm.id;
+  renderOnce(select, `${state.os}:${state.alg}`, () => [
+    new Option('Choose a CGM…', ''),
+    ...algorithm.cgms.map((c) => new Option(`${c.name} — [${c.driverTag}]`, c.id)),
+  ]);
+  select.value = state.cgm;
+
+  $('cgmDetails').hidden = !cgm;
+  if (!cgm) return;
 
   setText('cgmDriverBadge', cgm.driverTag);
   setText('cgmHowTo', cgm.howToUseWithAlgorithm);
@@ -172,13 +191,13 @@ function renderPump(state, algorithm) {
   const select = $('pumpSelect');
   renderOnce(select, `${state.os}:${state.alg}:${state.showDeprecated}`, () =>
     pumps.length > 0
-      ? pumps.map((p) => new Option(pumpOptionLabel(p), p.id))
+      ? [new Option('Choose a pump…', ''), ...pumps.map((p) => new Option(pumpOptionLabel(p), p.id))]
       : [new Option('No pumps match the current filter', '')]
   );
   select.disabled = pumps.length === 0;
   select.value = pump?.id ?? '';
 
-  $('pumpEmpty').hidden = Boolean(pump);
+  $('pumpEmpty').hidden = pumps.length > 0;
   $('pumpDetails').hidden = !pump;
   if (!pump) return;
 

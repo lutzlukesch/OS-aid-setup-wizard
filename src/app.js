@@ -13,7 +13,7 @@ let toastTimer = null;
 
 function setState(patch) {
   state = normalize({ ...state, ...patch }, data);
-  history.replaceState(null, '', stateToHash(state));
+  history.replaceState(null, '', stateToHash(state) || location.pathname + location.search);
   render(state, data);
 }
 
@@ -29,7 +29,7 @@ const actions = {
   reset() {
     setState({ ...DEFAULT_STATE });
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    showToast('Wizard reset to default Master (iOS → Loop) path.');
+    showToast('Wizard reset. Start by choosing a device role.');
   },
   'open-json': openJsonDialog,
   'close-json': () => $('jsonDialog').close(),

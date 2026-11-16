@@ -18,12 +18,16 @@ export function fillFields(root, fields) {
   }
 }
 
-/** Marks the radio whose data-value matches as checked, with a roving tabindex. */
+/**
+ * Marks the radio whose data-value matches as checked, with a roving tabindex.
+ * With nothing checked, the first radio takes the tab stop.
+ */
 export function syncRadioGroup(group, value) {
-  for (const radio of group.querySelectorAll('[role="radio"]')) {
-    const checked = radio.dataset.value === value;
-    radio.setAttribute('aria-checked', String(checked));
-    radio.tabIndex = checked ? 0 : -1;
+  const radios = [...group.querySelectorAll('[role="radio"]')];
+  const current = radios.find((radio) => radio.dataset.value === value) ?? radios[0];
+  for (const radio of radios) {
+    radio.setAttribute('aria-checked', String(radio.dataset.value === value));
+    radio.tabIndex = radio === current ? 0 : -1;
   }
 }
 

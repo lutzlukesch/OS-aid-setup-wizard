@@ -1,17 +1,16 @@
 // Wizard state: one plain object, normalized against flow.json after every
 // change and mirrored into the URL hash so a setup can be shared as a link.
 
+// '' means "not chosen yet": an empty hash and Reset both start with no selection.
 export const DEFAULT_STATE = Object.freeze({
-  role: 'master',          // 'master' | 'follower'
-  os: 'ios',               // 'ios' | 'android'
-  alg: 'loop',             // algorithm on the master device
-  followerAlg: 'trio',     // algorithm the caregiver is following
+  role: '',                // 'master' | 'follower'
+  os: '',                  // 'ios' | 'android'
+  alg: '',                 // algorithm on the master device
+  followerAlg: '',         // algorithm the caregiver is following
   cgm: '',
   pump: '',
   showDeprecated: true,
 });
-
-const firstKey = (object) => Object.keys(object)[0];
 
 export const masterAlgorithms = (state, data) => data.roles.master.platforms[state.os].algorithms;
 export const followerAlgorithms = (state, data) => data.roles.follower.platforms[state.os].masterAlgorithms;
@@ -27,25 +26,25 @@ export function visiblePumps(algorithm, showDeprecated) {
 export const selectedCgm = (state, algorithm) => algorithm.cgms.find((cgm) => cgm.id === state.cgm);
 export const selectedPump = (state, algorithm) => algorithm.pumps.find((pump) => pump.id === state.pump);
 
-/** Replaces every choice that does not exist for the current path with the first valid one. */
+/**
+ * Clears every choice that does not exist for the current path, and every
+ * choice whose step comes after an empty one. Nothing is ever filled in.
+ */
 export function normalize(state, data) {
   const next = { ...state };
 
-  if (!(next.role in data.roles)) next.role = DEFAULT_STATE.role;
+  if (!(next.role in data.roles)) next.role = '';
   const hasOs = (role) => next.os in data.roles[role].platforms;
-  if (!hasOs('master') || !hasOs('follower')) next.os = DEFAULT_STATE.os;
+  if (!next.role || !hasOs('master') || !hasOs('follower')) next.os = '';
 
-  const following = followerAlgorithms(next, data);
-  if (!(next.followerAlg in following)) next.followerAlg = firstKey(following);
+  if (!next.os || !(next.followerAlg in followerAlgorithms(next, data))) next.followerAlg = '';
+  if (!next.os || !(next.alg in masterAlgorithms(next, data))) next.alg = '';
 
-  const algorithms = masterAlgorithms(next, data);
-  if (!(next.alg in algorithms)) next.alg = firstKey(algorithms);
+  const algorithm = next.alg && masterAlgorithm(next, data);
+  if (!algorithm || !selectedCgm(next, algorithm)) next.cgm = '';
 
-  const algorithm = algorithms[next.alg];
-  if (!selectedCgm(next, algorithm)) next.cgm = algorithm.cgms[0].id;
-
-  const pumps = visiblePumps(algorithm, next.showDeprecated);
-  if (!pumps.some((pump) => pump.id === next.pump)) next.pump = pumps[0]?.id ?? '';
+  const pumps = next.cgm ? visiblePumps(algorithm, next.showDeprecated) : [];
+  if (!pumps.some((pump) => pump.id === next.pump)) next.pump = '';
 
   return next;
 }
@@ -66,17 +65,22 @@ export function stateFromHash(hash) {
   return state;
 }
 
+/** Returns '' when nothing is chosen. */
 export function stateToHash(state) {
-  const params = new URLSearchParams({ role: state.role, os: state.os });
+  const params = new URLSearchParams();
+  const set = (key, value) => value && params.set(key, value);
 
+  set('role', state.role);
+  set('os', state.os);
   if (state.role === 'follower') {
-    params.set('alg', state.followerAlg);
+    set('alg', state.followerAlg);
   } else {
-    params.set('alg', state.alg);
-    params.set('cgm', state.cgm);
-    if (state.pump) params.set('pump', state.pump);
+    set('alg', state.alg);
+    set('cgm', state.cgm);
+    set('pump', state.pump);
     if (!state.showDeprecated) params.set('legacy', '0');
   }
 
-  return `#${params}`;
+  const query = params.toString();
+  return query && `#${query}`;
 }
