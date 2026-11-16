@@ -1,0 +1,18 @@
+{
+  "name": "open-source-aid-setup-guide",
+  "private": true,
+  "description": "Interactive setup planner for open-source automated insulin delivery (Loop, Trio, AAPS)",
+  "type": "module",
+  "scripts": {
+    "build:css": "tailwindcss -i src/styles.css -o assets/styles.css --minify",
+    "build": "npm run build:css && rm -rf _site && mkdir _site && cp -R index.html favicon.svg assets src data _site/",
+    "dev": "tailwindcss -i src/styles.css -o assets/styles.css --watch & serve -l 8000 .",
+    "validate": "node scripts/validate-flow.js"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.0",
+    "ajv": "^8.17.1",
+    "serve": "^14.2.0",
+    "tailwindcss": "^4.1.0"
+  }
+}

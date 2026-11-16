@@ -1,0 +1,654 @@
+{
+  "$schema": "./flow.schema.json",
+  "lastUpdated": "2026-11-16",
+  "roles": {
+    "follower": {
+      "label": "Follower / Caregiver",
+      "steps": ["Role: Caregiver", "Caregiver OS", "Master Alg", "Caregiver Apps"],
+      "platforms": {
+        "ios": {
+          "name": "iOS (iPhone / iPad)",
+          "subtitle": "LoopFollow, LoopCaregiver, Careportal & xDrip4iOS",
+          "costBadge": "$0 (App Store) or $99/yr (Self-Built)",
+          "costNote": "LoopFollow and Shuggah are free on the App Store or via Browser Build. Sending direct APNS remote commands to Loop or Trio requires the Master builder's APNS Key/QR Code.",
+          "buildMethod": "App Store, GitHub Browser Build, or Xcode",
+          "masterAlgorithms": {
+            "trio": {
+              "name": "Trio",
+              "badge": "OpenAPS on iOS",
+              "summary": "Supports direct APNS remote dosing (Meals with FPU, Bolus, Temp Targets, Overrides) via LoopFollow or Nightscout Careportal.",
+              "buildOptions": [
+                {
+                  "id": "loopfollow-trio-ios",
+                  "name": "LoopFollow (with Trio Direct APNS Remote Control)",
+                  "purpose": "Primary iOS caregiver app for Trio. View alarms/predictions and send Remote Meal (with FPU), Remote Bolus, Temp Targets, and Overrides directly via APNS.",
+                  "installMethod": "GitHub Browser Build or Xcode + Import Trio QR Code",
+                  "requiresNightscout": true,
+                  "docsUrl": "https://triodocs.org/configuration/settings/features/remote-control/",
+                  "docsLabel": "Trio Remote Control Docs"
+                },
+                {
+                  "id": "nightscout-careportal-trio-ios",
+                  "name": "Nightscout Web App (Careportal)",
+                  "purpose": "Send remote treatments and temp targets via browser to Trio (requires Nightscout 15.0.2+ and Trio Shared Secret).",
+                  "installMethod": "Safari Web Bookmark / PWA ($0)",
+                  "requiresNightscout": true,
+                  "docsUrl": "https://loopfollowdocs.org/remote/remote-control-overview/",
+                  "docsLabel": "Remote Control Overview"
+                },
+                {
+                  "id": "xdrip4ios-trio",
+                  "name": "xDrip4iOS (Shuggah) \u2014 View & Alarms Only",
+                  "purpose": "Follow glucose readings via Nightscout or Dexcom Share with Apple Watch & CarPlay widgets (no remote dosing).",
+                  "installMethod": "TestFlight / Self-Build via Xcode or GitHub Actions",
+                  "requiresNightscout": false,
+                  "docsUrl": "https://xdrip4ios.readthedocs.io/en/latest/connect/follower/",
+                  "docsLabel": "xDrip4iOS Follower Docs"
+                }
+              ]
+            },
+            "loop": {
+              "name": "Loop",
+              "badge": "Loop Prediction Curve",
+              "summary": "Supports direct APNS remote carbs, bolus, and overrides via LoopFollow or LoopCaregiver with 30-second OTP security.",
+              "buildOptions": [
+                {
+                  "id": "loopfollow-loop-ios",
+                  "name": "LoopFollow (with Loop Direct APNS Remote Control)",
+                  "purpose": "Full-featured alarm dashboard + direct APNS Remote Carbs, Bolus, and Overrides with 30s OTP security and real-time confirmation (Loop v3.11.1+).",
+                  "installMethod": "GitHub Browser Build or Xcode + Scan Looper QR Code",
+                  "requiresNightscout": true,
+                  "docsUrl": "https://loopfollowdocs.org/remote/remote-control-loop/",
+                  "docsLabel": "LoopFollow Remote Docs"
+                },
+                {
+                  "id": "loop-caregiver-ios",
+                  "name": "LoopCaregiver",
+                  "purpose": "Dedicated native iOS remote bolus, carb entry, and override controller for a Master Loop user.",
+                  "installMethod": "GitHub Browser Build (TestFlight) or Xcode ($99/yr Apple Dev)",
+                  "requiresNightscout": true,
+                  "docsUrl": "https://loopkit.github.io/loopdocs/nightscout/loop-caregiver/",
+                  "docsLabel": "LoopCaregiver Docs"
+                },
+                {
+                  "id": "xdrip4ios-loop",
+                  "name": "xDrip4iOS (Shuggah) \u2014 View & Alarms Only",
+                  "purpose": "View-only follower for Nightscout or Dexcom Share with Apple Watch & CarPlay complications.",
+                  "installMethod": "TestFlight / Self-Build via Xcode or GitHub Actions",
+                  "requiresNightscout": false,
+                  "docsUrl": "https://xdrip4ios.readthedocs.io/en/latest/connect/follower/",
+                  "docsLabel": "xDrip4iOS Follower Docs"
+                }
+              ]
+            },
+            "aaps": {
+              "name": "AAPS (AndroidAPS)",
+              "badge": "OpenAPS on Android",
+              "summary": "Remote dosing from iOS to an Android AAPS master is handled via 2FA-authenticated SMS commands or Nightscout Careportal.",
+              "buildOptions": [
+                {
+                  "id": "aaps-sms-ios",
+                  "name": "AAPS SMS Remote Commands (via iOS Messages)",
+                  "purpose": "Send remote Bolus, Carbs, Temp Targets, and Profile Switches to the Master AAPS phone using 2-factor authenticated SMS commands.",
+                  "installMethod": "Built-in iOS Messages app configured in AAPS SMS Communicator ($0)",
+                  "requiresNightscout": false,
+                  "docsUrl": "https://androidaps.readthedocs.io/en/latest/RemoteFeatures/SMSCommands.html",
+                  "docsLabel": "AAPS SMS Commands Docs"
+                },
+                {
+                  "id": "aaps-ns-careportal-ios",
+                  "name": "Nightscout Web App (Careportal)",
+                  "purpose": "Monitor OpenAPS predictions, IOB/COB, and enter remote Careportal treatments from Safari.",
+                  "installMethod": "Safari Web App / Bookmark ($0)",
+                  "requiresNightscout": true,
+                  "docsUrl": "https://androidaps.readthedocs.io/en/latest/RemoteFeatures/RemoteControl.html",
+                  "docsLabel": "AAPS Remote Control Docs"
+                },
+                {
+                  "id": "loopfollow-aaps-view",
+                  "name": "LoopFollow / xDrip4iOS \u2014 View & Alarms Only",
+                  "purpose": "Monitor AAPS Nightscout glucose, IOB, and customizable alarms on iOS (Note: LoopFollow v6.2+ does not send Careportal commands to AAPS).",
+                  "installMethod": "Browser Build / TestFlight",
+                  "requiresNightscout": true,
+                  "docsUrl": "https://loopfollowdocs.org/",
+                  "docsLabel": "LoopFollow Docs"
+                }
+              ]
+            }
+          }
+        },
+        "android": {
+          "name": "Android",
+          "subtitle": "AAPSClient, Careportal, SMS & xDrip+",
+          "costBadge": "$0 USD (Free)",
+          "costNote": "$0 USD (Free). Native remote control on Android is available via AAPSClient (for AAPS) or Nightscout Careportal Web App (for Trio and Loop).",
+          "buildMethod": "GitHub Actions APK, Direct APK, or Browser PWA",
+          "masterAlgorithms": {
+            "trio": {
+              "name": "Trio",
+              "badge": "OpenAPS on iOS",
+              "summary": "On Android, remote dosing to Trio uses the Nightscout Careportal web app (NS 15.0.2+); xDrip+ provides view-only alarms.",
+              "buildOptions": [
+                {
+                  "id": "ns-careportal-trio-android",
+                  "name": "Nightscout Web App (Careportal)",
+                  "purpose": "Only option on Android for sending remote Bolus, Carbs, Temp Targets, and Overrides to a Trio user (requires Nightscout 15.0.2+ & Trio Shared Secret).",
+                  "installMethod": "Chrome / Browser PWA Bookmark ($0)",
+                  "requiresNightscout": true,
+                  "docsUrl": "https://triodocs.org/configuration/settings/features/remote-control/",
+                  "docsLabel": "Trio Remote Control Docs"
+                },
+                {
+                  "id": "xdrip-plus-trio-android",
+                  "name": "xDrip+ Follower \u2014 View & Alarms Only",
+                  "purpose": "Low-latency follower alarms, glucose predictions, and WearOS/Garmin watch faces (no remote dosing for Trio).",
+                  "installMethod": "Direct APK Download ($0)",
+                  "requiresNightscout": false,
+                  "docsUrl": "https://navid200.github.io/xDrip/docs/How-to-follow.html",
+                  "docsLabel": "xDrip+ Follower Docs"
+                }
+              ]
+            },
+            "loop": {
+              "name": "Loop",
+              "badge": "Loop Prediction Curve",
+              "summary": "On Android, remote dosing to Loop uses the Nightscout Careportal web app with OTP; xDrip+ provides view-only alarms.",
+              "buildOptions": [
+                {
+                  "id": "ns-careportal-loop-android",
+                  "name": "Nightscout Web App (Careportal)",
+                  "purpose": "Only option on Android to send remote Carbs, Bolus (requires OTP), and Overrides to a Loop user (requires APNS keys in Nightscout config vars).",
+                  "installMethod": "Chrome / Browser PWA Bookmark ($0)",
+                  "requiresNightscout": true,
+                  "docsUrl": "https://loopkit.github.io/loopdocs/nightscout/remote-overview/",
+                  "docsLabel": "Loop Remote Overview Docs"
+                },
+                {
+                  "id": "xdrip-plus-loop-android",
+                  "name": "xDrip+ Follower \u2014 View & Alarms Only",
+                  "purpose": "Follow Nightscout or Dexcom Share for custom alarms and smartwatch faces (no remote dosing for Loop).",
+                  "installMethod": "Direct APK Download ($0)",
+                  "requiresNightscout": false,
+                  "docsUrl": "https://navid200.github.io/xDrip/docs/How-to-follow.html",
+                  "docsLabel": "xDrip+ Follower Docs"
+                }
+              ]
+            },
+            "aaps": {
+              "name": "AAPS (AndroidAPS)",
+              "badge": "OpenAPS on Android",
+              "summary": "Unlocks AAPSClient for full native remote control over Nightscout V3 Websockets plus 2FA SMS commands.",
+              "buildOptions": [
+                {
+                  "id": "aapsclient-android",
+                  "name": "AAPSClient (AAPSClient / AAPSClient2 / AAPSClient3)",
+                  "purpose": "Official native Android companion app. Signed Master <-> Client remote control (Bolus, Carbs, Profile Switch, Temp Targets, Scenes) via Nightscout V3 Websockets.",
+                  "installMethod": "Build aapsclientRelease flavor in GitHub Actions or Android Studio ($0)",
+                  "requiresNightscout": true,
+                  "docsUrl": "https://androidaps.readthedocs.io/en/latest/RemoteFeatures/ClientMasterControl.html",
+                  "docsLabel": "AAPS Master-Client Control Docs"
+                },
+                {
+                  "id": "aaps-sms-android",
+                  "name": "AAPS SMS Remote Commands",
+                  "purpose": "Send 2FA-authenticated SMS commands directly to the Master AAPS phone (ideal when internet/websockets are unavailable).",
+                  "installMethod": "Android SMS App + AAPS SMS Communicator ($0)",
+                  "requiresNightscout": false,
+                  "docsUrl": "https://androidaps.readthedocs.io/en/latest/RemoteFeatures/SMSCommands.html",
+                  "docsLabel": "AAPS SMS Commands Docs"
+                },
+                {
+                  "id": "xdrip-plus-aaps-android",
+                  "name": "xDrip+ Follower \u2014 View & Alarms Only",
+                  "purpose": "Dedicated alarm and smartwatch follower via Nightscout, Dexcom Share, or Juggluco.",
+                  "installMethod": "Direct APK Download ($0)",
+                  "requiresNightscout": false,
+                  "docsUrl": "https://navid200.github.io/xDrip/docs/How-to-follow.html",
+                  "docsLabel": "xDrip+ Follower Docs"
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "master": {
+      "label": "Master (Looping Device)",
+      "steps": ["Role: Master", "Platform (OS)", "Algorithm", "CGM Bridge", "Pump & Docs", "Clinical Docs"],
+      "platforms": {
+        "ios": {
+          "name": "iOS (iPhone)",
+          "subtitle": "Unlocks Loop & Trio",
+          "costBadge": "$99 USD / year",
+          "costNote": "Paid Apple Developer Program membership required for 365-day signing and NFC capabilities (free tier requires 7-day rebuilds).",
+          "buildMethod": "GitHub Actions (Browser Build -> TestFlight) or macOS with Xcode",
+          "algorithms": {
+            "loop": {
+              "name": "Loop",
+              "engine": "Loop Prediction Curve",
+              "badge": "Most Popular on iOS",
+              "summary": "Carb-absorption and insulin-effect prediction curve algorithm with native iOS & Apple Watch app.",
+              "startDocsUrl": "https://loopkit.github.io/loopdocs/",
+              "cgms": [
+                {
+                  "id": "dexcom-g7-oneplus",
+                  "name": "Dexcom G7 (10-Day & 15-Day) / Dexcom ONE+",
+                  "driverTag": "Native BLE Intercept \u2022 G7 / ONE+ App",
+                  "wakesAppInBackground": true,
+                  "extraNote": "Provides a reliable 5-minute background BLE wake heartbeat.",
+                  "howToUseWithAlgorithm": "Pair your sensor in the official Dexcom G7 or ONE+ iOS app first, then open Loop -> Settings -> Add CGM -> Dexcom G7. Loop intercepts the Bluetooth packets directly offline.",
+                  "cgmDocsUrl": "https://loopkit.github.io/loopdocs/loop-3/cgm/#dexcom-g7"
+                },
+                {
+                  "id": "dexcom-g6",
+                  "name": "Dexcom G6 / Dexcom ONE / Anubis Transmitter",
+                  "driverTag": "Native BLE \u2022 6-Digit Transmitter ID",
+                  "wakesAppInBackground": true,
+                  "extraNote": "Anubis extended-life transmitters supported in Loop v3.14.6+.",
+                  "howToUseWithAlgorithm": "Enter your 6-digit Transmitter ID inside Loop -> Add CGM -> Dexcom G6. Runs 100% offline alongside the official Dexcom G6 app or xDrip4iOS.",
+                  "cgmDocsUrl": "https://loopkit.github.io/loopdocs/loop-3/cgm/#dexcom-g6"
+                },
+                {
+                  "id": "libre-3",
+                  "name": "FreeStyle Libre 3 / Libre 3 Plus",
+                  "driverTag": "Direct BLE (next-dev) or xDrip4iOS Fork",
+                  "wakesAppInBackground": true,
+                  "extraNote": "Requires Loop `next-dev` branch for native direct BLE, or a custom xDrip4iOS fork.",
+                  "howToUseWithAlgorithm": "Build Loop `next-dev` for built-in direct Bluetooth pairing, OR pair with a custom `xDrip4iOS` (`libre3-integration`) build and select 'xDrip4iOS' via Shared App Group in Loop.",
+                  "cgmDocsUrl": "https://loopkit.github.io/loopdocs/loop-3/cgm/"
+                },
+                {
+                  "id": "libre-2-eu",
+                  "name": "FreeStyle Libre 2 / 2+ (EU / International)",
+                  "driverTag": "Direct BLE \u2022 LibreTransmitter NFC Plugin",
+                  "wakesAppInBackground": true,
+                  "extraNote": "Requires paid $99 Apple Developer account for iOS NFC entitlement. (US/CA Libre 2 is unsupported).",
+                  "howToUseWithAlgorithm": "In Loop -> Add CGM -> FreeStyle Libre, scan the sensor via iPhone NFC to start direct 1-minute Bluetooth streaming into Loop without needing the Abbott app.",
+                  "cgmDocsUrl": "https://loopkit.github.io/loopdocs/loop-3/cgm/#freestyle-libre"
+                },
+                {
+                  "id": "eversense-e3-365",
+                  "name": "Senseonics Eversense E3 / Eversense 365",
+                  "driverTag": "Direct BLE \u2022 Loop v3.14.2+",
+                  "wakesAppInBackground": true,
+                  "extraNote": "Do not run the official Eversense app simultaneously while Loop is connected.",
+                  "howToUseWithAlgorithm": "Select 'Eversense' inside Loop -> Add CGM to pair directly with the smart transmitter over Bluetooth.",
+                  "cgmDocsUrl": "https://loopkit.github.io/loopdocs/loop-3/cgm/"
+                },
+                {
+                  "id": "medtronic-guardian-remote",
+                  "name": "Medtronic Guardian / Simplera (Remote Nightscout)",
+                  "driverTag": "Cloud Only \u2022 Nightscout Remote CGM",
+                  "wakesAppInBackground": false,
+                  "extraNote": "Warning: Cloud-only CGM does NOT wake Loop in the background if iOS suspends the app.",
+                  "howToUseWithAlgorithm": "Requires a separate uploader device pushing readings to Nightscout, then select 'Nightscout' as CGM in Loop. Requires constant internet.",
+                  "cgmDocsUrl": "https://loopkit.github.io/loopdocs/loop-3/cgm/"
+                }
+              ],
+              "pumps": [
+                {
+                  "id": "omnipod-dash",
+                  "name": "Insulet Omnipod DASH",
+                  "type": "Tubeless Patch Pump",
+                  "status": "Fully Supported",
+                  "support": "supported",
+                  "lifecycle": "active",
+                  "requiresHeartbeatCgm": false,
+                  "driverInfo": "Built-in OmniBLE driver \u2014 Direct Bluetooth from iPhone to pod (no PDM or bridge needed).",
+                  "continueDocsUrl": "https://loopkit.github.io/loopdocs/loop-3/omnipod/"
+                },
+                {
+                  "id": "omnipod-5",
+                  "name": "Insulet Omnipod 5",
+                  "type": "Tubeless Patch Pump",
+                  "status": "Supported (Loop v3.14+)",
+                  "support": "supported",
+                  "lifecycle": "active",
+                  "requiresHeartbeatCgm": false,
+                  "driverInfo": "Native Omni5Kit BLE driver included in Loop v3.14+ (Direct Bluetooth to pod).",
+                  "continueDocsUrl": "https://loopkit.github.io/loopdocs/loop-3/omnipod/#omnipod-5-support"
+                },
+                {
+                  "id": "medtrum-nano",
+                  "name": "Medtrum TouchCare Nano (200U / 300U)",
+                  "type": "Tubeless Patch Pump",
+                  "status": "Supported (Loop v3.14.2+)",
+                  "support": "supported",
+                  "lifecycle": "active",
+                  "requiresHeartbeatCgm": false,
+                  "driverInfo": "Native MedtrumKit Direct BLE driver (supports MD0201/8201 200U & MD8301 300U).",
+                  "continueDocsUrl": "https://loopkit.github.io/loopdocs/loop-3/loop-3-overview/"
+                },
+                {
+                  "id": "dana-i",
+                  "name": "SOOIL Dana-i / Dana RS (v3)",
+                  "type": "Tubed Pump",
+                  "status": "Feature Branch (DanaKit)",
+                  "support": "supported",
+                  "lifecycle": "active",
+                  "requiresHeartbeatCgm": false,
+                  "driverInfo": "Direct Bluetooth via DanaKit branch (or use Trio on iOS for built-in mainline support).",
+                  "continueDocsUrl": "https://loopkit.github.io/loopdocs/loop-3/loop-3-overview/"
+                },
+                {
+                  "id": "omnipod-eros",
+                  "name": "Insulet Omnipod Eros (Classic UST400)",
+                  "type": "Tubeless Patch Pump",
+                  "status": "Legacy / Discontinued",
+                  "support": "supported",
+                  "lifecycle": "deprecated",
+                  "deprecatedNote": "Discontinued by Insulet. Still supported in Loop for remaining pod supplies using a 433 MHz RF bridge.",
+                  "requiresHeartbeatCgm": false,
+                  "driverInfo": "OmniKit RF driver \u2014 Requires a 433 MHz RileyLink, OrangeLink, or EmaLink bridge.",
+                  "continueDocsUrl": "https://loopkit.github.io/loopdocs/loop-3/omnipod/"
+                },
+                {
+                  "id": "medtronic-legacy",
+                  "name": "Medtronic MiniMed 515/715, 522/722, 523/723 (<=2.4A)",
+                  "type": "Tubed Pump",
+                  "status": "Legacy / Discontinued",
+                  "support": "supported",
+                  "lifecycle": "deprecated",
+                  "deprecatedNote": "Out-of-warranty legacy pumps (2006\u20132012) with specific older firmware. Cannot be downgraded if firmware is newer.",
+                  "requiresHeartbeatCgm": false,
+                  "driverInfo": "MinimedKit RF driver \u2014 Requires 916 MHz (NA) or 868 MHz (WW) RileyLink/OrangeLink bridge.",
+                  "continueDocsUrl": "https://loopkit.github.io/loopdocs/loop-3/medtronic/"
+                },
+                {
+                  "id": "tandem-mobi",
+                  "name": "Tandem Mobi / t:slim X2",
+                  "type": "Tubed Pump",
+                  "status": "Not Yet Supported",
+                  "support": "unsupported",
+                  "lifecycle": "active",
+                  "requiresHeartbeatCgm": false,
+                  "driverInfo": "Proprietary Tandem BLE encryption; no open-source dosing driver exists.",
+                  "continueDocsUrl": null
+                }
+              ]
+            },
+            "trio": {
+              "name": "Trio",
+              "engine": "OpenAPS (oref1 \u2022 SMBs & Dynamic ISF)",
+              "badge": "oref1 Algorithm on iOS",
+              "summary": "Brings the OpenAPS oref1 algorithm (Super Micro Boluses, Dynamic ISF, UAM) to iOS with a modern Swift UI.",
+              "startDocsUrl": "https://triodocs.org/",
+              "cgms": [
+                {
+                  "id": "dexcom-g7-oneplus",
+                  "name": "Dexcom G7 (10-Day & 15-Day) / Dexcom ONE+",
+                  "driverTag": "Native BLE \u2022 G7 / ONE+ App",
+                  "wakesAppInBackground": true,
+                  "extraNote": "Provides a reliable 5-minute background BLE wake heartbeat (ideal for Omnipod 5).",
+                  "howToUseWithAlgorithm": "Start your sensor in the official Dexcom G7/ONE+ app, then choose 'Dexcom G7' in Trio -> Settings -> Devices -> CGM. Trio reads Bluetooth broadcasts locally.",
+                  "cgmDocsUrl": "https://triodocs.org/configuration/settings/devices/cgm/"
+                },
+                {
+                  "id": "dexcom-g6",
+                  "name": "Dexcom G6 / Dexcom ONE / Anubis Transmitter",
+                  "driverTag": "Native BLE or xDrip4iOS App Group",
+                  "wakesAppInBackground": true,
+                  "extraNote": "Trusted offline BLE heartbeat.",
+                  "howToUseWithAlgorithm": "Select 'Dexcom G5 / G6 / ONE' in Trio and enter your 6-digit Transmitter ID, or share values offline from a same-team build of xDrip4iOS.",
+                  "cgmDocsUrl": "https://triodocs.org/configuration/settings/devices/cgm/"
+                },
+                {
+                  "id": "libre-3",
+                  "name": "FreeStyle Libre 3 / Libre 3 Plus",
+                  "driverTag": "Direct BLE (Trio Open Beta) or xDrip4iOS Fork",
+                  "wakesAppInBackground": true,
+                  "extraNote": "Direct BLE supported natively in Trio Open Beta (`dev`) for all regional sensors.",
+                  "howToUseWithAlgorithm": "Pair directly via Bluetooth in Trio -> Devices -> CGM -> FreeStyle Libre 3 / 3 Plus, or bridge via custom `xDrip4iOS` Shared App Group.",
+                  "cgmDocsUrl": "https://triodocs.org/configuration/settings/devices/cgm/"
+                },
+                {
+                  "id": "accu-chek-smartguide",
+                  "name": "Roche Accu-Chek SmartGuide (14-Day CGM)",
+                  "driverTag": "Direct BLE \u2022 Trio (Testing)",
+                  "wakesAppInBackground": true,
+                  "extraNote": "Requires initial fingerstick calibrations.",
+                  "howToUseWithAlgorithm": "Select 'Accu-Chek SmartGuide' in Trio -> Devices -> CGM to connect via direct Bluetooth or run alongside the official SmartGuide app.",
+                  "cgmDocsUrl": "https://triodocs.org/configuration/settings/devices/cgm/"
+                },
+                {
+                  "id": "medtronic-guardian-remote",
+                  "name": "Medtronic Guardian / Simplera (Remote Nightscout)",
+                  "driverTag": "Cloud Only \u2022 Nightscout as CGM",
+                  "wakesAppInBackground": false,
+                  "extraNote": "Does NOT provide a background BLE wake heartbeat.",
+                  "howToUseWithAlgorithm": "Pulls glucose from a Nightscout URL fed by an external uploader phone. Not compatible with pumps requiring a local BLE heartbeat.",
+                  "cgmDocsUrl": "https://triodocs.org/configuration/settings/devices/cgm/"
+                }
+              ],
+              "pumps": [
+                {
+                  "id": "omnipod-dash",
+                  "name": "Insulet Omnipod DASH",
+                  "type": "Tubeless Patch Pump",
+                  "status": "Fully Supported",
+                  "support": "supported",
+                  "lifecycle": "active",
+                  "requiresHeartbeatCgm": false,
+                  "driverInfo": "Built-in Direct Bluetooth driver (no PDM or RF bridge needed).",
+                  "continueDocsUrl": "https://triodocs.org/configuration/settings/devices/pump/"
+                },
+                {
+                  "id": "dana-i",
+                  "name": "SOOIL Dana-i / Dana RS (v3)",
+                  "type": "Tubed Pump",
+                  "status": "Fully Supported",
+                  "support": "supported",
+                  "lifecycle": "active",
+                  "requiresHeartbeatCgm": false,
+                  "driverInfo": "Built-in mainline Dana(RS/-i) Direct Bluetooth driver.",
+                  "continueDocsUrl": "https://triodocs.org/configuration/settings/devices/pump/"
+                },
+                {
+                  "id": "medtrum-nano",
+                  "name": "Medtrum TouchCare Nano (200U / 300U)",
+                  "type": "Tubeless Patch Pump",
+                  "status": "Fully Supported",
+                  "support": "supported",
+                  "lifecycle": "active",
+                  "requiresHeartbeatCgm": false,
+                  "driverInfo": "Built-in Direct Bluetooth Medtrum Nano driver.",
+                  "continueDocsUrl": "https://triodocs.org/configuration/settings/devices/pump/"
+                },
+                {
+                  "id": "omnipod-5",
+                  "name": "Insulet Omnipod 5",
+                  "type": "Tubeless Patch Pump",
+                  "status": "Open Beta (dev branch)",
+                  "support": "supported",
+                  "lifecycle": "active",
+                  "requiresHeartbeatCgm": true,
+                  "driverInfo": "Direct BLE in Trio; requires internet for the very first pod certificate and a CGM with a reliable 5-minute background BLE wake heartbeat.",
+                  "continueDocsUrl": "https://triodocs.org/configuration/settings/devices/pump/"
+                },
+                {
+                  "id": "omnipod-eros",
+                  "name": "Insulet Omnipod Eros (Classic UST400)",
+                  "type": "Tubeless Patch Pump",
+                  "status": "Legacy / Discontinued",
+                  "support": "supported",
+                  "lifecycle": "deprecated",
+                  "deprecatedNote": "Discontinued by Insulet. Supported for remaining pod supplies using a 433 MHz RF bridge.",
+                  "requiresHeartbeatCgm": false,
+                  "driverInfo": "OmniKit RF driver \u2014 Requires 433 MHz RileyLink, OrangeLink, or EmaLink bridge.",
+                  "continueDocsUrl": "https://triodocs.org/configuration/settings/devices/pump/"
+                }
+              ]
+            }
+          }
+        },
+        "android": {
+          "name": "Android",
+          "subtitle": "Unlocks AAPS (AndroidAPS)",
+          "costBadge": "$0 USD (Free)",
+          "costNote": "Compiled via GitHub Actions (Browser Build) or Android Studio and sideloaded free. No Google Play Developer account required.",
+          "buildMethod": "GitHub Actions Browser Build (Recommended) or Android Studio",
+          "algorithms": {
+            "aaps": {
+              "name": "AAPS (AndroidAPS)",
+              "engine": "OpenAPS (oref0 / oref1 / Dynamic ISF)",
+              "badge": "Full Android Standard",
+              "summary": "Comprehensive Android system featuring built-in safety objectives, SMBs, Dynamic ISF, and extensive Bluetooth pump support.",
+              "startDocsUrl": "https://androidaps.readthedocs.io/en/latest/SettingUpAaps/BuildingAaps.html",
+              "cgms": [
+                {
+                  "id": "libre-3",
+                  "name": "FreeStyle Libre 3 / Libre 3 Plus",
+                  "driverTag": "Trusted BG \u2022 Direct BLE via Juggluco",
+                  "wakesAppInBackground": true,
+                  "extraNote": "Recognized as a Trusted BG Data Source in AAPS (unlocks unconditional SMBs offline).",
+                  "howToUseWithAlgorithm": "Install Juggluco on Android to connect directly to Libre 3 via Bluetooth, enable 'Patched Libre / xDrip broadcast' in Juggluco, and select 'Juggluco' or 'xDrip+' as BG Source in AAPS.",
+                  "cgmDocsUrl": "https://androidaps.readthedocs.io/en/latest/Getting-Started/CompatiblesCgms.html"
+                },
+                {
+                  "id": "dexcom-g7-g6",
+                  "name": "Dexcom G7 (10/15-Day) / G6 / ONE+ / ONE / Stelo",
+                  "driverTag": "Trusted BG \u2022 xDrip+ Direct / BYODA / Notification Reader",
+                  "wakesAppInBackground": true,
+                  "extraNote": "Recognized as a Trusted BG Data Source in AAPS for full offline SMB operation.",
+                  "howToUseWithAlgorithm": "Use xDrip+ (Direct Native BLE), BYODA (G6/G7), Juggluco (G7/ONE+), or AAPS Notification Reader (G7/ONE+/Stelo).",
+                  "cgmDocsUrl": "https://androidaps.readthedocs.io/en/latest/CompatibleCgms/DexcomG7.html"
+                },
+                {
+                  "id": "libre-2",
+                  "name": "FreeStyle Libre 2 / Libre 2 Plus",
+                  "driverTag": "Trusted BG \u2022 Juggluco or xDrip+ (OOP2)",
+                  "wakesAppInBackground": true,
+                  "extraNote": "Recognized as a Trusted BG Data Source in AAPS.",
+                  "howToUseWithAlgorithm": "Connect directly via Juggluco or xDrip+ (with OOP2 native Bluetooth decryption) and broadcast locally to AAPS every 1\u20135 minutes offline.",
+                  "cgmDocsUrl": "https://androidaps.readthedocs.io/en/latest/Getting-Started/CompatiblesCgms.html"
+                },
+                {
+                  "id": "syai-ottai",
+                  "name": "Syai X1 / Ottai M8",
+                  "driverTag": "Trusted BG \u2022 Native AAPS 4.0 / Notification Reader",
+                  "wakesAppInBackground": true,
+                  "extraNote": "Recognized as a Trusted BG Data Source in AndroidAPS 4.0.",
+                  "howToUseWithAlgorithm": "Select the native Syai/Ottai BG source or Notification Reader in AAPS 4.0.",
+                  "cgmDocsUrl": "https://androidaps.readthedocs.io/en/latest/Getting-Started/CompatiblesCgms.html"
+                },
+                {
+                  "id": "sibionics-eversense-companion",
+                  "name": "Eversense E3/365 / CareSens / PocTech / Companion Apps",
+                  "driverTag": "Non-Trusted BG \u2022 xDrip+ Companion / Eversense App",
+                  "wakesAppInBackground": true,
+                  "extraNote": "Note: Classified as a non-trusted BG source in AAPS (standard temp basals work; 'SMB always' is restricted).",
+                  "howToUseWithAlgorithm": "Connect sensor via Eversense app / ESEL or xDrip+ Companion mode broadcasting locally to AAPS.",
+                  "cgmDocsUrl": "https://androidaps.readthedocs.io/en/latest/Getting-Started/CompatiblesCgms.html"
+                }
+              ],
+              "pumps": [
+                {
+                  "id": "omnipod-dash",
+                  "name": "Insulet Omnipod DASH",
+                  "type": "Tubeless Patch Pump",
+                  "status": "Fully Supported",
+                  "support": "supported",
+                  "lifecycle": "active",
+                  "requiresHeartbeatCgm": false,
+                  "driverInfo": "Native AAPS Omnipod DASH BLE driver (no PDM or RF bridge required).",
+                  "continueDocsUrl": "https://androidaps.readthedocs.io/en/latest/CompatiblePumps/OmnipodDASH.html"
+                },
+                {
+                  "id": "dana-i",
+                  "name": "SOOIL Dana-i / Dana-i2 / DanaRS (v3)",
+                  "type": "Tubed Pump",
+                  "status": "Fully Supported",
+                  "support": "supported",
+                  "lifecycle": "active",
+                  "requiresHeartbeatCgm": false,
+                  "driverInfo": "Native AAPS Dana-i/RS Direct Bluetooth driver (supports Dana-i2 in AAPS 4.0+).",
+                  "continueDocsUrl": "https://androidaps.readthedocs.io/en/latest/CompatiblePumps/DanaRS-Insulin-Pump.html"
+                },
+                {
+                  "id": "medtrum-nano",
+                  "name": "Medtrum TouchCare Nano (200U / 300U)",
+                  "type": "Tubeless Patch Pump",
+                  "status": "Fully Supported",
+                  "support": "supported",
+                  "lifecycle": "active",
+                  "requiresHeartbeatCgm": false,
+                  "driverInfo": "Native AAPS Medtrum Nano 200U / 300U Direct Bluetooth driver.",
+                  "continueDocsUrl": "https://androidaps.readthedocs.io/en/latest/Getting-Started/CompatiblePumps.html"
+                },
+                {
+                  "id": "eopatch-2",
+                  "name": "EOFlow EOPatch 2 / GlucoMen Day Pump",
+                  "type": "Tubeless Patch Pump",
+                  "status": "Fully Supported",
+                  "support": "supported",
+                  "lifecycle": "active",
+                  "requiresHeartbeatCgm": false,
+                  "driverInfo": "Native AAPS EOPatch2 Direct Bluetooth driver.",
+                  "continueDocsUrl": "https://androidaps.readthedocs.io/en/latest/CompatiblePumps/EOPatch2.html"
+                },
+                {
+                  "id": "diaconn-g8-equil-carelevo",
+                  "name": "G2E Diaconn G8 / MicroTech Equil 5.3 & 5.4 / CareLevo",
+                  "type": "Tubed & Patch Pumps",
+                  "status": "Fully Supported (AAPS 4.0)",
+                  "support": "supported",
+                  "lifecycle": "active",
+                  "requiresHeartbeatCgm": false,
+                  "driverInfo": "Native Direct Bluetooth drivers built into AndroidAPS 4.0.",
+                  "continueDocsUrl": "https://androidaps.readthedocs.io/en/latest/Getting-Started/CompatiblePumps.html"
+                },
+                {
+                  "id": "dana-rs",
+                  "name": "SOOIL Dana R / Dana RS (v1)",
+                  "type": "Tubed Pump",
+                  "status": "Legacy / Discontinued",
+                  "support": "supported",
+                  "lifecycle": "deprecated",
+                  "deprecatedNote": "Superseded commercially by the Dana-i / i2. Existing Dana RS and Dana R pumps remain fully supported in AAPS.",
+                  "requiresHeartbeatCgm": false,
+                  "driverInfo": "Native AAPS DanaR / DanaRS Bluetooth driver.",
+                  "continueDocsUrl": "https://androidaps.readthedocs.io/en/latest/CompatiblePumps/DanaRS-Insulin-Pump.html"
+                },
+                {
+                  "id": "accu-chek-combo-insight",
+                  "name": "Roche Accu-Chek Spirit Combo / Insight",
+                  "type": "Tubed Pump",
+                  "status": "Legacy / Discontinued",
+                  "support": "supported",
+                  "lifecycle": "deprecated",
+                  "deprecatedNote": "Discontinued by Roche in most markets. Supported on AndroidAPS via Classic BT (Combo) or BLE (Insight).",
+                  "requiresHeartbeatCgm": false,
+                  "driverInfo": "Native AAPS Accu-Chek Combo & Insight drivers.",
+                  "continueDocsUrl": "https://androidaps.readthedocs.io/en/latest/CompatiblePumps/Accu-Chek-Combo-Pump-v2.html"
+                },
+                {
+                  "id": "omnipod-eros",
+                  "name": "Insulet Omnipod Eros (Classic UST400)",
+                  "type": "Tubeless Patch Pump",
+                  "status": "Legacy / Discontinued",
+                  "support": "supported",
+                  "lifecycle": "deprecated",
+                  "deprecatedNote": "Discontinued by Insulet. Supported for remaining pod supplies using a 433 MHz RF bridge.",
+                  "requiresHeartbeatCgm": false,
+                  "driverInfo": "AAPS Omnipod Eros driver \u2014 Requires 433 MHz RileyLink, OrangeLink, EmaLink, or DiaLink.",
+                  "continueDocsUrl": "https://androidaps.readthedocs.io/en/latest/CompatiblePumps/OmnipodEros.html"
+                },
+                {
+                  "id": "ypsopump-omnipod5-android",
+                  "name": "myLife YpsoPump / Insulet Omnipod 5 / Tandem Mobi",
+                  "type": "Tubed & Patch Pumps",
+                  "status": "Not Yet Supported",
+                  "support": "unsupported",
+                  "lifecycle": "active",
+                  "requiresHeartbeatCgm": false,
+                  "driverInfo": "Proprietary encrypted BLE protocols; no open-source AndroidAPS driver is available.",
+                  "continueDocsUrl": null
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

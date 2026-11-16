@@ -1,0 +1,169 @@
+@import "tailwindcss" source(none);
+@source "../index.html";
+@source "./";
+
+@theme {
+  --font-sans: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+@layer base {
+  [hidden] {
+    display: none !important;
+  }
+
+  html,
+  body {
+    background-color: var(--color-slate-950);
+    color: var(--color-slate-100);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* Accent of the active role, read by choice cards, radios and the stepper */
+  body {
+    --accent: var(--color-sky-500);
+    --accent-soft: var(--color-sky-400);
+  }
+
+  body[data-role="follower"] {
+    --accent: var(--color-purple-500);
+    --accent-soft: var(--color-purple-400);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-sky-400);
+    outline-offset: 2px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-slate-950);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-slate-800);
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-slate-700);
+  }
+}
+
+@layer components {
+  .icon {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  .wizard-card {
+    @apply rounded-2xl border border-slate-800 bg-slate-900 shadow-[0_10px_25px_-5px_rgb(0_0_0/0.45)];
+  }
+
+  /* Selectable card inside a [role=radiogroup]; state comes from aria-checked */
+  .choice-card {
+    @apply flex cursor-pointer flex-col justify-between rounded-xl border-2 border-slate-800 bg-slate-950/60 p-5 text-left transition duration-200 hover:-translate-y-px hover:border-slate-700;
+  }
+  .choice-card[aria-checked="true"] {
+    @apply shadow-md;
+    border-color: var(--accent);
+    background-color: color-mix(in oklab, var(--accent) 10%, transparent);
+  }
+
+  .radio-dot {
+    @apply flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 border-slate-600;
+  }
+  .radio-dot::after {
+    @apply h-2.5 w-2.5 rounded-full;
+    content: "";
+  }
+  [aria-checked="true"] .radio-dot {
+    border-color: var(--accent-soft);
+  }
+  [aria-checked="true"] .radio-dot::after {
+    background-color: var(--accent-soft);
+  }
+
+  .choice-grid {
+    @apply grid grid-cols-1 gap-4 sm:grid-cols-2;
+  }
+  .choice-grid[data-count="1"] {
+    @apply sm:grid-cols-1;
+  }
+  .choice-grid[data-count="3"] {
+    @apply sm:grid-cols-3;
+  }
+
+  .stepper {
+    @apply mt-4 grid grid-cols-2 gap-2 border-t border-slate-800/80 pt-3 text-xs sm:grid-cols-3 lg:grid-cols-6;
+  }
+  .stepper[data-count="4"] {
+    @apply sm:grid-cols-4 lg:grid-cols-4;
+  }
+  .step-number {
+    @apply flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-[10px] font-bold;
+    color: var(--accent-soft);
+    background-color: color-mix(in oklab, var(--accent) 20%, transparent);
+  }
+
+  /* Pill badge; colour picked with data-tone so JS never builds class names */
+  .badge {
+    @apply inline-flex items-center rounded-full border border-slate-700 bg-slate-800 px-2.5 py-0.5 text-[11px] font-semibold text-slate-300;
+  }
+  .badge[data-tone="sky"] {
+    @apply border-sky-500/30 bg-sky-500/15 text-sky-300;
+  }
+  .badge[data-tone="emerald"] {
+    @apply border-emerald-500/30 bg-emerald-500/15 text-emerald-300;
+  }
+  .badge[data-tone="amber"] {
+    @apply border-amber-500/30 bg-amber-500/20 text-amber-300;
+  }
+  .badge[data-tone="rose"] {
+    @apply border-rose-500/30 bg-rose-500/20 text-rose-300;
+  }
+  .badge[data-tone="purple"] {
+    @apply border-purple-500/30 bg-purple-500/15 text-purple-300;
+  }
+
+  .btn {
+    @apply inline-flex items-center gap-1.5 rounded-xl border border-slate-700 bg-slate-800 px-3 py-2 text-xs font-semibold text-slate-300 transition hover:bg-slate-700;
+  }
+
+  .cta {
+    @apply inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-sky-500 px-5 py-2.5 text-xs font-bold text-slate-950 shadow-md transition hover:bg-sky-400 sm:text-sm;
+  }
+  .cta[data-variant="muted"] {
+    @apply border border-slate-700 bg-slate-800 text-slate-200 shadow-none hover:bg-slate-700;
+  }
+
+  .dark-select {
+    @apply w-full cursor-pointer appearance-none rounded-xl border border-slate-700 bg-slate-950 py-3 pr-10 pl-3.5 text-sm leading-snug text-slate-100 hover:border-slate-600 disabled:cursor-not-allowed disabled:opacity-60;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1.1rem;
+  }
+
+  .json-dialog {
+    @apply m-auto max-h-[85vh] w-full max-w-3xl overflow-hidden rounded-2xl border border-slate-700 bg-slate-900 p-0 text-slate-100 shadow-2xl;
+  }
+  .json-dialog[open] {
+    @apply flex flex-col;
+  }
+  .json-dialog::backdrop {
+    @apply bg-slate-950/80 backdrop-blur-sm;
+  }
+
+  .toast {
+    @apply pointer-events-none fixed right-5 bottom-5 z-50 flex max-w-sm translate-y-2 items-center gap-2.5 rounded-xl border border-sky-500/40 bg-slate-900 px-4 py-3 text-xs text-slate-100 opacity-0 shadow-2xl transition duration-200;
+  }
+  .toast[data-visible] {
+    @apply translate-y-0 opacity-100;
+  }
+}
